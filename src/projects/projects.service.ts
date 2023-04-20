@@ -6,6 +6,7 @@ import { ViaCepApi } from '../utils/viacep-api';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
 import { Project } from './entities/project.entity';
+import ProjectNotFoundException from './exceptions/project-found.exception';
 import { IProject } from './projects.interfaces';
 
 @Injectable()
@@ -31,9 +32,13 @@ export class ProjectsService {
   }
 
   async findOne(id: string) {
-    const project = await this.projectsRepository.findOneBy({ id });
-    const local = await ViaCepApi.getLocalByZipCode(project.zip_code);
-    return new IProject(project, local);
+    try {
+      const project = await this.projectsRepository.findOneBy({ id });
+      const local = await ViaCepApi.getLocalByZipCode(project.zip_code);
+      return new IProject(project, local);
+    } catch {
+      throw new ProjectNotFoundException(id);
+    }
   }
 
   update(id: number, updateProjectDto: UpdateProjectDto) {
