@@ -2,9 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import UserNotFoundException from 'src/users/exceptions/user-not-found.exception';
 import { Repository } from 'typeorm';
+import { ViaCepApi } from '../utils/viacep-api';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
 import { Project } from './entities/project.entity';
+import { IProject } from './projects.interfaces';
 
 @Injectable()
 export class ProjectsService {
@@ -28,8 +30,10 @@ export class ProjectsService {
     return await this.projectsRepository.findBy({ username });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} project`;
+  async findOne(id: string) {
+    const project = await this.projectsRepository.findOneBy({ id });
+    const local = await ViaCepApi.getLocalByZipCode(project.zip_code);
+    return new IProject(project, local);
   }
 
   update(id: number, updateProjectDto: UpdateProjectDto) {
