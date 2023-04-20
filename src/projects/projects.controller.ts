@@ -17,14 +17,15 @@ export class ProjectsController {
   constructor(private readonly projectsService: ProjectsService) {}
 
   @Post()
-  create(@Body() createProjectDto: CreateProjectDto, @Request() req) {
+  async create(@Body() createProjectDto: CreateProjectDto, @Request() req) {
     const username = req.headers.user;
-    return this.projectsService.create(createProjectDto, username);
+    return await this.projectsService.create(createProjectDto, username);
   }
 
   @Get()
-  findAll() {
-    return this.projectsService.findAll();
+  async findAll(@Request() req) {
+    const username = req.headers.user;
+    return await this.projectsService.findAllUsersProjects(username);
   }
 
   @Get(':id')
