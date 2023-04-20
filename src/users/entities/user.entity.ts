@@ -1,10 +1,4 @@
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  PrimaryColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { Column, Entity, PrimaryColumn } from 'typeorm';
 import { v4 as uuid } from 'uuid';
 
 @Entity()
@@ -17,17 +11,6 @@ export class User {
   username: string;
   @Column({ type: 'varchar', width: 200 })
   password: string;
-  @CreateDateColumn({
-    name: 'created_at',
-    default: () => 'CURRENT_TIMESTAMP',
-  })
-  createdAt: Date;
-  @UpdateDateColumn({
-    name: 'updated_at',
-    default: () => 'CURRENT_TIMESTAMP',
-    onUpdate: 'CURRENT_TIMESTAMP',
-  })
-  updatedAt: Date;
 
   constructor() {
     if (!this.id) {
