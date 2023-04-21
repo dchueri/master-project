@@ -2,9 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
 import { Repository } from 'typeorm';
+import UserAlreadyExistsException from '../common/exceptions/user-already-exists';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './entities/user.entity';
-import UserAlreadyExistsException from './exceptions/user-already-exists';
 
 @Injectable()
 export class UsersService {
