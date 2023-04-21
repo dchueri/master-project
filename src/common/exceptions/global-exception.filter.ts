@@ -5,7 +5,7 @@ import {
   HttpException,
 } from '@nestjs/common';
 import { Response } from 'express';
-import { QueryFailedError } from 'typeorm';
+import { EntityPropertyNotFoundError, QueryFailedError } from 'typeorm';
 
 @Catch()
 export class GlobalExceptionFilter implements ExceptionFilter {
@@ -22,14 +22,18 @@ export class GlobalExceptionFilter implements ExceptionFilter {
       message = res.message;
     }
     if (error instanceof QueryFailedError) {
-      if (error.driverError.code == '23503') {
+      if (error.driverError.code === '23503') {
         status = 404;
         message = `User with username '${error.parameters.at(-1)}' not found`;
       }
-      /* 
+      if (error.driverError.code === '22P02') {
+        status = 400;
+        message = error.driverError.message;
+      }
+    }
+    if (error instanceof EntityPropertyNotFoundError) {
       status = 400;
-      message = error.message; */
-      console.log(error.driverError.code);
+      message = error.message;
     }
 
     response.status(status).json({

@@ -1,12 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import UserNotFoundException from 'src/users/exceptions/user-not-found.exception';
 import { Repository } from 'typeorm';
+import ProjectNotFoundException from '../common/exceptions/project-found.exception';
 import { ViaCepApi } from '../utils/viacep-api';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
 import { Project } from './entities/project.entity';
-import ProjectNotFoundException from './exceptions/project-found.exception';
 import { IProject } from './projects.interfaces';
 
 @Injectable()
@@ -16,15 +15,11 @@ export class ProjectsService {
     private readonly projectsRepository: Repository<Project>,
   ) {}
   async create(createProjectDto: CreateProjectDto, username: string) {
-    try {
-      const project = await this.projectsRepository.create({
-        ...createProjectDto,
-        username,
-      });
-      return await this.projectsRepository.save(project);
-    } catch {
-      throw new UserNotFoundException(username);
-    }
+    const project = await this.projectsRepository.create({
+      ...createProjectDto,
+      username,
+    });
+    return await this.projectsRepository.save(project);
   }
 
   async findAllUsersProjects(username: string) {
@@ -32,17 +27,26 @@ export class ProjectsService {
   }
 
   async findOne(id: string) {
-    try {
-      const project = await this.projectsRepository.findOneBy({ id });
-      const local = await ViaCepApi.getLocalByZipCode(project.zip_code);
-      return new IProject(project, local);
-    } catch {
+    const project = await this.projectsRepository.findOneBy({ id });
+    if (!project) {
       throw new ProjectNotFoundException(id);
     }
+    const local = await ViaCepApi.getLocalByZipCode(project.zip_code);
+    return new IProject(project, local);
   }
 
-  update(id: number, updateProjectDto: UpdateProjectDto) {
-    return `This action updates a #${id} project`;
+  async update(
+    id: string,
+    updateProjectDto: UpdateProjectDto,
+    username: string,
+  ) {
+    const project = await this.projectsRepository.findOneBy({ username, id });
+    if (!project) {
+      throw new ProjectNotFoundException(id);
+    }
+    await this.projectsRepository.update(id, updateProjectDto);
+    const updatedProject = await this.projectsRepository.findOneBy({ id });
+    return updatedProject;
   }
 
   remove(id: number) {

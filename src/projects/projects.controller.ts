@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Put,
   Request,
 } from '@nestjs/common';
 import { CreateProjectDto } from './dto/create-project.dto';
@@ -33,9 +34,22 @@ export class ProjectsController {
     return await this.projectsService.findOne(id);
   }
 
+  @Put(':id')
+  async update(
+    @Param('id') id: string,
+    @Body() updateProjectDto: UpdateProjectDto,
+    @Request() req,
+  ) {
+    const username = req.headers.user;
+    return this.projectsService.update(id, updateProjectDto, username);
+  }
+
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateProjectDto: UpdateProjectDto) {
-    return this.projectsService.update(+id, updateProjectDto);
+  setAsDone(
+    @Param('id') id: string,
+    @Body() updateProjectDto: UpdateProjectDto,
+  ) {
+    return this.projectsService.update(id, updateProjectDto, '');
   }
 
   @Delete(':id')
