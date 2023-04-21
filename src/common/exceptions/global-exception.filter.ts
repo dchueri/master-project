@@ -14,7 +14,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
     const response = ctx.getResponse<Response>();
 
     let status = 500;
-    let message: string | object = 'Internal server error';
+    let message = error.message;
 
     if (error instanceof HttpException) {
       status = error.getStatus();
@@ -22,6 +22,10 @@ export class GlobalExceptionFilter implements ExceptionFilter {
       message = res.message;
     }
     if (error instanceof QueryFailedError) {
+      if (error.driverError.code === '23505') {
+        status = 400;
+        message = `Username ${error.parameters[2]} already exists`;
+      }
       if (error.driverError.code === '23503') {
         status = 404;
         message = `User with username '${error.parameters.at(-1)}' not found`;
