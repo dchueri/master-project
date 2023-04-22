@@ -49,7 +49,18 @@ export class ProjectsService {
     return updatedProject;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} project`;
+  async setAsDone(id: string, username: string) {
+    const project = await this.projectsRepository.findOneBy({ username, id });
+    if (!project) {
+      throw new ProjectNotFoundException(id);
+    }
+    await this.projectsRepository.update(id, { done: true });
+  }
+
+  async remove(id: string, username: string) {
+    const result = await this.projectsRepository.delete({ id, username });
+    if (result.affected === 0) {
+      throw new ProjectNotFoundException(id);
+    }
   }
 }

@@ -3,6 +3,8 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
+  HttpStatus,
   Param,
   Patch,
   Post,
@@ -41,19 +43,20 @@ export class ProjectsController {
     @Request() req,
   ) {
     const username = req.headers.user;
-    return this.projectsService.update(id, updateProjectDto, username);
+    return await this.projectsService.update(id, updateProjectDto, username);
   }
 
-  @Patch(':id')
-  setAsDone(
-    @Param('id') id: string,
-    @Body() updateProjectDto: UpdateProjectDto,
-  ) {
-    return this.projectsService.update(id, updateProjectDto, '');
+  @Patch(':id/done')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async setAsDone(@Param('id') id: string, @Request() req) {
+    const username = req.headers.user;
+    return await this.projectsService.setAsDone(id, username);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.projectsService.remove(+id);
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async remove(@Param('id') id: string, @Request() req) {
+    const username = req.headers.user;
+    return await this.projectsService.remove(id, username);
   }
 }
