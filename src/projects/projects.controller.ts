@@ -43,18 +43,20 @@ export class ProjectsController {
     @Request() req,
   ) {
     const username = req.headers.user;
-    return this.projectsService.update(id, updateProjectDto, username);
+    return await this.projectsService.update(id, updateProjectDto, username);
   }
 
   @Patch(':id/done')
   @HttpCode(HttpStatus.NO_CONTENT)
-  setAsDone(@Param('id') id: string, @Request() req) {
+  async setAsDone(@Param('id') id: string, @Request() req) {
     const username = req.headers.user;
-    return this.projectsService.setAsDone(id, username);
+    return await this.projectsService.setAsDone(id, username);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.projectsService.remove(+id);
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async remove(@Param('id') id: string, @Request() req) {
+    const username = req.headers.user;
+    return await this.projectsService.remove(id, username);
   }
 }
