@@ -3,6 +3,8 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
+  HttpStatus,
   Param,
   Patch,
   Post,
@@ -44,12 +46,11 @@ export class ProjectsController {
     return this.projectsService.update(id, updateProjectDto, username);
   }
 
-  @Patch(':id')
-  setAsDone(
-    @Param('id') id: string,
-    @Body() updateProjectDto: UpdateProjectDto,
-  ) {
-    return this.projectsService.update(id, updateProjectDto, '');
+  @Patch(':id/done')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  setAsDone(@Param('id') id: string, @Request() req) {
+    const username = req.headers.user;
+    return this.projectsService.setAsDone(id, username);
   }
 
   @Delete(':id')
