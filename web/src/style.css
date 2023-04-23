@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .button {
+    @apply inline-block rounded-full bg-primary p-2 uppercase leading-normal text-[white] shadow-secondary-800 transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-secondary-700 
+        focus:shadow-secondary-900 focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-secondary-900;
+  }
+
+  .disabled {
+    @apply bg-secondary-500 text-secondary-100 hover:bg-secondary-400 active:bg-secondary-700;
+  }
+
+  .red {
+    @apply bg-danger-600 hover:bg-danger-500 active:bg-danger-200;
+  }
+}
