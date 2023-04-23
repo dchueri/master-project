@@ -6,7 +6,7 @@ import { ViaCepApi } from '../utils/viacep-api';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
 import { Project } from './entities/project.entity';
-import { IProject } from './projects.interfaces';
+import { IProject } from './projects.interface';
 
 @Injectable()
 export class ProjectsService {

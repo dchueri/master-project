@@ -15,6 +15,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
 
     let status = 500;
     let message = error.message;
+    console.log(error);
 
     if (error instanceof HttpException) {
       status = error.getStatus();

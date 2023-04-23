@@ -1,7 +1,10 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { APP_FILTER } from '@nestjs/core';
+import { APP_FILTER, APP_GUARD } from '@nestjs/core';
+import { JwtService } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AuthModule } from './auth/auth.module';
+import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import { GlobalExceptionFilter } from './common/exceptions/global-exception.filter';
 import { HeadersMiddleware } from './common/middleware/headers.middleware';
 import { ProjectsModule } from './projects/projects.module';
@@ -24,13 +27,19 @@ import { UsersModule } from './users/users.module';
     }),
     UsersModule,
     ProjectsModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [
     {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
+    {
       provide: APP_FILTER,
       useClass: GlobalExceptionFilter,
     },
+    JwtService,
   ],
 })
 export class AppModule implements NestModule {
