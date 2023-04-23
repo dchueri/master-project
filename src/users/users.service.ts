@@ -22,4 +22,10 @@ export class UsersService {
     const saltOrRounds = 10;
     return await bcrypt.hash(password, saltOrRounds);
   }
+
+  async findByUsername(username: string) {
+    return await this.usersRepository.findOneBy({
+      username,
+    });
+  }
 }
