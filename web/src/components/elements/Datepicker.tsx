@@ -1,14 +1,7 @@
-import { useState } from 'react'
 import Datepicker from 'react-tailwindcss-datepicker'
 
-const Date = () => {
-  const [value, setValue] = useState({
-    startDate: null,
-    endDate: null
-  })
-
+const DatePicker = ({ value, setValue }) => {
   const handleValueChange = (newValue) => {
-    console.log('newValue:', newValue)
     setValue(newValue)
   }
 
@@ -23,4 +16,4 @@ const Date = () => {
   )
 }
 
-export default Date
+export default DatePicker
