@@ -20,8 +20,7 @@ export const AuthProvider = ({ children }: IAuthProvider) => {
   async function authenticate(username: string, password: string) {
     const res = await userService.login(username, password)
 
-    const payload = { token: res.token, username }
-
+    const payload = { token: res.access_token, username }
     setUser(payload)
     userService.setUserLocalStorage(payload)
   }

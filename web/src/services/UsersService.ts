@@ -4,7 +4,7 @@ import api from '../utils/api'
 export class UsersService {
   async login(username: string, password: string) {
     try {
-      const req = await api.post('/auth/login', { username, password })
+      const req = await api().post('/auth/login', { username, password })
       return req.data
     } catch {
       return null

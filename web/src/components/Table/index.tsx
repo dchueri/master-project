@@ -5,22 +5,27 @@ import { useEffect, useState } from 'react'
 import { MdClose, MdDone } from 'react-icons/md'
 import { IProject } from '../../interfaces/IProject'
 import { ProjectsService } from '../../services/ProjectsService'
+import { UsersService } from '../../services/UsersService'
 
 const Table = () => {
   const [projects, setProjects] = useState<IProject[]>()
   const projectsService = new ProjectsService()
+  const usersService = new UsersService()
+  const user = usersService.getUserLocalStorage()
 
   const handleSetProjectAsDone = async (projectId: string) =>
-    await projectsService.setProjectAsDone(projectId)
+    await projectsService.setProjectAsDone(projectId, user)
 
   const handleDeleteProject = async (projectId: string) =>
-    await projectsService.deleteProject(projectId)
+    await projectsService.deleteProject(projectId, user)
 
   useEffect(() => {
-    projectsService
-      .getAllProjects()
-      .then((res) => setProjects(res.data))
-      .catch((e) => console.log(e))
+    if (!projects) {
+      projectsService
+        .getAllProjects(user)
+        .then((res) => setProjects(res.data))
+        .catch((e) => console.log(e))
+    }
   })
   return (
     <div className="flex flex-col justify-center relative z-10">

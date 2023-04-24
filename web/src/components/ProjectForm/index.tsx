@@ -1,11 +1,12 @@
 import { formatToBRL } from 'brazilian-values'
-import Button from 'components/elements/Button'
-import DatePicker from 'components/elements/Datepicker'
 import { Field, Form, Formik } from 'formik'
 import { useState } from 'react'
-import { ProjectsService } from 'services/ProjectsService'
 import * as Yup from 'yup'
+import Button from '../../components/elements/Button'
+import DatePicker from '../../components/elements/Datepicker'
 import Line from '../../public/line.svg'
+import { ProjectsService } from '../../services/ProjectsService'
+import { UsersService } from '../../services/UsersService'
 
 const schema = Yup.object().shape({
   title: Yup.string().required('O projeto precisa ter um Título'),
@@ -23,13 +24,15 @@ const ProjectForm = () => {
   const [cost, setCost] = useState<number>(0)
   const [deadline, setDeadline] = useState({ startDate: null, endDate: null })
   const projectsService = new ProjectsService()
+  const usersService = new UsersService()
+  const user = usersService.getUserLocalStorage()
 
   const handleSubmit = (e) => {
     e.cost = cost
     e.deadline = new Date(deadline.startDate!).toISOString()
     e.zip_code = parseInt(e.zip_code)
     projectsService
-      .addProject(e)
+      .addProject(e, user)
       .then((res) => console.log(res))
       .catch((e) => console.log(e.response.data))
   }
