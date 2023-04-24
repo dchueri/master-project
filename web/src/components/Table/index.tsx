@@ -13,18 +13,47 @@ const Table = () => {
   const usersService = new UsersService()
   const user = usersService.getUserLocalStorage()
 
-  const handleSetProjectAsDone = async (projectId: string) =>
+  const handleSetProjectAsDone = async (projectId: string) => {
     await projectsService.setProjectAsDone(projectId, user)
+    await getProjects()
+  }
 
-  const handleDeleteProject = async (projectId: string) =>
+  const handleDeleteProject = async (projectId: string) => {
     await projectsService.deleteProject(projectId, user)
+    deleteProject(projectId)
+  }
+
+  const sortProjects = (projects: IProject[]) => {
+    return projects.sort((a, b) => {
+      if (a.done && !b.done) {
+        return 1
+      }
+      if (!a.done && b.done) {
+        return -1
+      }
+      return 0
+    })
+  }
+
+  const getProjects = async () => {
+    try {
+      const response = await projectsService.getAllProjects(user)
+      setProjects(sortProjects(response.data))
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const deleteProject = (projectId: string) => {
+    const newProjects = projects?.filter((project) => project.id !== projectId)
+    if (newProjects) {
+      setProjects(newProjects)
+    }
+  }
 
   useEffect(() => {
     if (!projects) {
-      projectsService
-        .getAllProjects(user)
-        .then((res) => setProjects(res.data))
-        .catch((e) => console.log(e))
+      getProjects()
     }
   })
   return (
