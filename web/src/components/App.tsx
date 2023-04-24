@@ -11,10 +11,10 @@ function App() {
     if (e.target.id === 'container') return setOpen(false)
   }
   return (
-    <div className="relative overflow-hidden bg-white">
+    <div className="relative overflow-hidden bg-[white] h-[100vh] flex flex-col justify-center gap-2">
       <div className="w-full flex justify-center">
         <div onClick={handleOpenModal}>
-          <Button>Open</Button>
+          <Button className="button text">Adicionar Projeto</Button>
         </div>
         <FormModal open={open} handleCloseModal={handleCloseModal} />
       </div>

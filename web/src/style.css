@@ -27,8 +27,12 @@
   }
 
   .button {
-    @apply inline-block rounded-full bg-primary p-2 uppercase leading-normal text-[white] shadow-gray-800 transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-gray-700 
+    @apply inline-block rounded-full bg-primary-700 p-2 leading-normal text-[white] shadow-gray-800 transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-gray-700 
         focus:shadow-gray-900 focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-gray-900;
+  }
+
+  .text {
+    @apply font-bold p-3 text-sm rounded-[6px] hover:bg-secondary hover:rounded-[28px] duration-200 transition-all;
   }
 
   .disabled {

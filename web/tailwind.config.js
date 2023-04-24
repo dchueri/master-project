@@ -20,7 +20,12 @@ module.exports = {
         800: '#202b3b',
         900: '#141a21'
       },
+      slate: {
+        600: 'rgb(71 85 105)',
+        800: '#fff'
+      },
       secondary: '#ff5806',
+      white: '#141a21',
       gray: {
         DEFAULT: '#9FA6B2',
         50: '#F8F9F9',
@@ -94,5 +99,5 @@ module.exports = {
       }
     }
   },
-  plugins: [require('flowbite/plugin')]
+  plugins: []
 }
