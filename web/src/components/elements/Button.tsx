@@ -2,11 +2,11 @@ import { ReactNode } from 'react'
 
 interface Props {
   className?: string
-  disabled?: boolean
+  type?: 'button' | 'submit' | 'reset' | undefined
   children?: ReactNode
 }
 
-const Button = ({ className = 'button', children }: Props) => {
+const Button = ({ className = 'button', children, type }: Props) => {
   return <button className={className}>{children}</button>
 }
 

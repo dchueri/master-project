@@ -1,0 +1,17 @@
+{
+    "name": "master-project",
+    "author": "Diego Chueri Aragão",
+    "version": "0.0.1",
+    "description": "",
+    "private": true,
+    "scripts": {
+        "web:dev": "cd web && yarn dev",
+        "web": "cd web && yarn preview",
+        "server": "cd server && yarn start",
+        "server:dev": "cd server && yarn start:dev",
+        "start:dev": "yarn web:dev & yarn server:dev",
+        "start": "yarn web & yarn server",
+        "docs": "cd docs && yarn start"
+    },
+    "license": "MIT"
+}

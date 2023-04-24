@@ -8,3 +8,10 @@ export interface IProject {
   createdAt: Date
   updatedAt: Date
 }
+
+export interface CreateProjectDto {
+  title: string
+  zip_code: number
+  deadline: string
+  cost: number
+}

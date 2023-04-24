@@ -2,14 +2,41 @@
 @tailwind components;
 @tailwind utilities;
 
+* {
+  font-family: 'Montserrat', sans-serif;
+}
+
+@layer base {
+  input[type='number'].appearance-none::-webkit-inner-spin-button,
+  input[type='number'].appearance-none::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  input[type='number'].appearance-none {
+    -moz-appearance: textfield;
+  }
+}
+
 @layer components {
+  body {
+    @apply text-primary subpixel-antialiased;
+  }
+
+  thead {
+    @apply uppercase;
+  }
+
   .button {
-    @apply inline-block rounded-full bg-primary p-2 uppercase leading-normal text-[white] shadow-secondary-800 transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-secondary-700 
-        focus:shadow-secondary-900 focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-secondary-900;
+    @apply inline-block rounded-full bg-primary-700 p-2 leading-normal text-[white] shadow-gray-800 transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-gray-700 
+        focus:shadow-gray-900 focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-gray-900;
+  }
+
+  .text {
+    @apply font-bold p-3 text-sm rounded-[6px] hover:bg-secondary hover:rounded-[28px] duration-200 transition-all;
   }
 
   .disabled {
-    @apply bg-secondary-500 text-secondary-100 hover:bg-secondary-400 active:bg-secondary-700;
+    @apply bg-gray-500 text-gray-100 hover:bg-gray-400 active:bg-gray-700;
   }
 
   .red {

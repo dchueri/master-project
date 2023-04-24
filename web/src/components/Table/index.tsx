@@ -23,12 +23,12 @@ const Table = () => {
       .catch((e) => console.log(e))
   })
   return (
-    <div className="flex flex-col h-[100vh] justify-center">
+    <div className="flex flex-col justify-center relative z-10">
       <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
         <div className="flex justify-center py-2 sm:px-6 lg:px-8">
           <div className="overflow-hidden rounded-lg">
-            <table className="min-w-full text-left text-sm font-light bg-secondary-50">
-              <thead className="border-b font-medium bg-secondary-100 dark:border-secondary-700">
+            <table className="min-w-full text-left text-sm font-light bg-gray-50">
+              <thead className="border-b font-medium bg-gray-100 border-gray-700">
                 <tr>
                   <th scope="col" className="px-6 py-4">
                     Título
@@ -54,9 +54,9 @@ const Table = () => {
                   return (
                     <tr
                       key={index}
-                      className="border-b transition duration-300 ease-in-out hover:bg-secondary-200 border-secondary-500"
+                      className="border-b transition duration-300 ease-in-out hover:bg-gray-200 border-gray-500"
                     >
-                      <td className="whitespace-nowrap px-6 py-4 font-medium">
+                      <td className="whitespace-nowrap px-6 py-4 font-[600]">
                         {project.title}
                       </td>
                       <td className="whitespace-nowrap px-6 py-4">
