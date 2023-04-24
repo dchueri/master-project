@@ -1,3 +1,5 @@
+import ProjectForm from 'components/ProjectForm'
+
 const FormModal = ({
   open,
   handleCloseModal
@@ -10,9 +12,11 @@ const FormModal = ({
     <div
       id="container"
       onClick={handleCloseModal}
-      className="fixed inset-0 bg-[black] bg-opacity-30 backdrop-blur-sm flex justify-center items-center"
+      className="fixed z-20 inset-0 bg-[black] bg-opacity-30 backdrop-blur-sm flex justify-center items-center"
     >
-      <div className="bg-[white] p-2 rounded">Modal</div>
+      <div className="bg-[white] p-2 rounded">
+        <ProjectForm />
+      </div>
     </div>
   )
 }

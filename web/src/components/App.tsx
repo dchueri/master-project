@@ -19,10 +19,7 @@ function App() {
         <FormModal open={open} handleCloseModal={handleCloseModal} />
       </div>
       <Table />
-      <img
-        className="absolute top-[62%] left-[85%] h-[350px] z-[-1]"
-        src={Fred}
-      />
+      <img className="absolute top-[62%] left-[85%] h-[350px] z-0" src={Fred} />
     </div>
   )
 }

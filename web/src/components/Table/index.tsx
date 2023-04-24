@@ -23,7 +23,7 @@ const Table = () => {
       .catch((e) => console.log(e))
   })
   return (
-    <div className="flex flex-col h-[100vh] justify-center">
+    <div className="flex flex-col h-[100vh] justify-center relative z-10">
       <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
         <div className="flex justify-center py-2 sm:px-6 lg:px-8">
           <div className="overflow-hidden rounded-lg">
