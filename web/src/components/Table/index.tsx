@@ -14,6 +14,7 @@ const Table = () => {
   const projectsService = new ProjectsService()
   const usersService = new UsersService()
   const user = usersService.getUserLocalStorage()
+  let findProject = false
 
   const handleSetProjectAsDone = async (projectId: string) => {
     await projectsService.setProjectAsDone(projectId, user)
@@ -40,6 +41,7 @@ const Table = () => {
   const getProjects = async () => {
     try {
       const response = await projectsService.getAllProjects(user)
+      findProject = true
       setProjects(sortProjects(response.data))
     } catch (error) {
       console.log(error)
@@ -95,14 +97,16 @@ const Table = () => {
                       <td className="whitespace-nowrap px-6 py-4 font-[600]">
                         {project.title}
                       </td>
-                      <td className="whitespace-nowrap px-6 py-4">
+                      <td className="whitespace-nowrap px-6 py-4 font-[400]">
                         {formatToCEP(project.zip_code.toString())}
                       </td>
-                      <td className="whitespace-nowrap px-6 py-4">
+                      <td className="whitespace-nowrap px-6 py-4 font-[400]">
                         {formatToBRL(project.cost / 100)}
                       </td>
-                      <td className="whitespace-nowrap px-6 py-4">{data}</td>
-                      <td className="whitespace-nowrap px-6 py-4">
+                      <td className="whitespace-nowrap px-6 py-4 font-[400]">
+                        {data}
+                      </td>
+                      <td className="whitespace-nowrap px-6 py-4 font-[400]">
                         {project.done == true ? 'Concluído' : 'Aberto'}
                       </td>
                       <td className="flex justify-center gap-2 whitespace-nowrap px-6 py-4 w-[min-content]">

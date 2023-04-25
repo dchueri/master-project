@@ -11,6 +11,15 @@ export class UsersService {
     }
   }
 
+  async createUser(name: string, username: string, password: string) {
+    try {
+      const req = await api().post('/users', { name, username, password })
+      return req
+    } catch (e) {
+      return e
+    }
+  }
+
   setUserLocalStorage(user: IUser | null) {
     localStorage.setItem('u', JSON.stringify(user))
   }
