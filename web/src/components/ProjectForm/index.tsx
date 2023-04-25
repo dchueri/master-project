@@ -1,7 +1,9 @@
 import { formatToBRL } from 'brazilian-values'
 import { Field, Form, Formik } from 'formik'
+import { Alerts } from 'interfaces/Alterts'
 import { useState } from 'react'
-import { useRecoilState } from 'recoil'
+import { useRecoilState, useSetRecoilState } from 'recoil'
+import { alertDispatch } from 'utils/alertDispatch'
 import * as Yup from 'yup'
 import Button from '../../components/elements/Button'
 import DatePicker from '../../components/elements/Datepicker'
@@ -9,7 +11,7 @@ import { IProject } from '../../interfaces/IProject'
 import Line from '../../public/line.svg'
 import { ProjectsService } from '../../services/ProjectsService'
 import { UsersService } from '../../services/UsersService'
-import { projectsState } from '../../utils/atom'
+import { alertState, projectsState } from '../../utils/atom'
 
 const schema = Yup.object().shape({
   title: Yup.string().required('O projeto precisa ter um Título'),
@@ -26,12 +28,20 @@ const ProjectForm = () => {
   const [projects, setProjects] = useRecoilState<IProject[] | null>(
     projectsState
   )
+  const setAlert = useSetRecoilState(alertState)
+
   const [cep, setCep] = useState<string>()
   const [cost, setCost] = useState<number>(0)
   const [deadline, setDeadline] = useState({ startDate: null, endDate: null })
   const projectsService = new ProjectsService()
   const usersService = new UsersService()
   const user = usersService.getUserLocalStorage()
+
+  const successAlert: Alerts = {
+    text: 'Projeto adicionado com sucesso',
+    type: 'success',
+    visible: true
+  }
 
   const addProject = (project: IProject) => {
     projects ? setProjects([...projects, project]) : setProjects([project])
@@ -44,8 +54,8 @@ const ProjectForm = () => {
     projectsService
       .addProject(e, user)
       .then((res) => {
-        console.log('oo', res.data)
         addProject(res.data)
+        alertDispatch(successAlert, setAlert)
       })
       .catch((e) => console.log(e))
   }
