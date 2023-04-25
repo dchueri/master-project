@@ -10,9 +10,7 @@ import { ProjectsService } from '../../services/ProjectsService'
 import { UsersService } from '../../services/UsersService'
 
 const Table = () => {
-  const [projects, setProjects] = useRecoilState<IProject[] | null>(
-    projectsState
-  )
+  const [projects, setProjects] = useRecoilState(projectsState)
   const projectsService = new ProjectsService()
   const usersService = new UsersService()
   const user = usersService.getUserLocalStorage()
