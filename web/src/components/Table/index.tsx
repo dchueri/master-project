@@ -1,14 +1,18 @@
 import { formatToBRL, formatToCEP } from 'brazilian-values'
 import Button from 'components/elements/Button'
 import moment from 'moment'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { MdClose, MdDone } from 'react-icons/md'
+import { useRecoilState } from 'recoil'
+import { projectsState } from 'utils/atom'
 import { IProject } from '../../interfaces/IProject'
 import { ProjectsService } from '../../services/ProjectsService'
 import { UsersService } from '../../services/UsersService'
 
 const Table = () => {
-  const [projects, setProjects] = useState<IProject[]>()
+  const [projects, setProjects] = useRecoilState<IProject[] | null>(
+    projectsState
+  )
   const projectsService = new ProjectsService()
   const usersService = new UsersService()
   const user = usersService.getUserLocalStorage()
@@ -52,6 +56,7 @@ const Table = () => {
   }
 
   useEffect(() => {
+    console.log(projects)
     if (!projects) {
       getProjects()
     }
