@@ -2,11 +2,14 @@ import Button from 'components/elements/Button'
 import { useAuth } from 'context/AuthProvider/useAuth'
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useSetRecoilState } from 'recoil'
+import { projectsState } from 'utils/atom'
 import Logo from '../../public/logo.svg'
 
 const Login: React.FC = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const setProjects = useSetRecoilState(projectsState)
   const auth = useAuth()
   const navigate = useNavigate()
 
@@ -18,6 +21,7 @@ const Login: React.FC = () => {
   const login = async (username: string, password: string) => {
     try {
       await auth.authenticate(username, password)
+      setProjects(null)
       navigate('/')
     } catch (e) {
       console.log(e)
