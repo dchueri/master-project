@@ -42,4 +42,8 @@
   .red {
     @apply bg-danger-600 hover:bg-danger-500 active:bg-danger-200;
   }
+
+  .error {
+    @apply text-danger-600 text-sm font-[500];
+  }
 }
