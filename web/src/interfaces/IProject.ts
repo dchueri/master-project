@@ -15,3 +15,8 @@ export interface CreateProjectDto {
   deadline: string
   cost: number
 }
+
+export interface UpdateProjectDto {
+  title: string
+  deadline: string
+}

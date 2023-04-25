@@ -2,14 +2,14 @@ import { formatToBRL, formatToCEP } from 'brazilian-values'
 import Button from 'components/elements/Button'
 import moment from 'moment'
 import { useEffect } from 'react'
-import { MdClose, MdDone } from 'react-icons/md'
+import { MdClose, MdDone, MdEdit } from 'react-icons/md'
 import { useRecoilState } from 'recoil'
 import { projectsState } from 'utils/atom'
 import { IProject } from '../../interfaces/IProject'
 import { ProjectsService } from '../../services/ProjectsService'
 import { UsersService } from '../../services/UsersService'
 
-const Table = () => {
+const Table = ({ updateModal }) => {
   const [projects, setProjects] = useRecoilState(projectsState)
   const projectsService = new ProjectsService()
   const usersService = new UsersService()
@@ -24,6 +24,11 @@ const Table = () => {
   const handleDeleteProject = async (projectId: string) => {
     await projectsService.deleteProject(projectId, user)
     deleteProject(projectId)
+  }
+
+  const handleOpenUpdateProjectModal = (project: IProject) => {
+    updateModal(project)
+    console.log(project)
   }
 
   const sortProjects = (projects: IProject[]) => {
@@ -111,23 +116,39 @@ const Table = () => {
                       </td>
                       <td className="flex justify-center gap-2 whitespace-nowrap px-6 py-4 w-[min-content]">
                         {project.done ? (
-                          <Button className={'button disabled'}>
-                            <MdDone />
-                          </Button>
-                        ) : (
-                          <div
-                            onClick={() => handleSetProjectAsDone(project.id)}
-                          >
-                            <Button className={'button'}>
+                          <>
+                            <Button className={'button disabled'}>
                               <MdDone />
                             </Button>
-                          </div>
+                            <Button className={'button disabled'}>
+                              <MdEdit />
+                            </Button>
+                          </>
+                        ) : (
+                          <>
+                            <Button
+                              className={'button'}
+                              onClick={() => handleSetProjectAsDone(project.id)}
+                            >
+                              <MdDone />
+                            </Button>
+                            <Button
+                              className={'button'}
+                              onClick={() =>
+                                handleOpenUpdateProjectModal(project)
+                              }
+                            >
+                              <MdEdit />
+                            </Button>
+                          </>
                         )}
-                        <div onClick={() => handleDeleteProject(project.id)}>
-                          <Button className="button red">
-                            <MdClose />
-                          </Button>
-                        </div>
+
+                        <Button
+                          className="button red"
+                          onClick={() => handleDeleteProject(project.id)}
+                        >
+                          <MdClose />
+                        </Button>
                       </td>
                     </tr>
                   )
