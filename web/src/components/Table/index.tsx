@@ -56,7 +56,6 @@ const Table = () => {
   }
 
   useEffect(() => {
-    console.log(projects)
     if (!projects) {
       getProjects()
     }

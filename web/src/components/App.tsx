@@ -2,6 +2,7 @@ import { BrowserRouter } from 'react-router-dom'
 import { RecoilRoot } from 'recoil'
 import { AuthProvider } from '../context/AuthProvider'
 import AppRoutes from '../routes'
+import { Alert } from './elements/Alert'
 
 function App() {
   return (
@@ -9,6 +10,7 @@ function App() {
       <AuthProvider>
         <BrowserRouter>
           <AppRoutes />
+          <Alert />
         </BrowserRouter>
       </AuthProvider>
     </RecoilRoot>
