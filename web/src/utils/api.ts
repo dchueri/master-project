@@ -1,12 +1,17 @@
 import axios from 'axios'
+import { IUser } from 'context/AuthProvider/types'
 
-const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL,
-  headers: {
-    Authorization:
-      'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3N2FiZDBmYi04OTI1LTQ2MGEtOGY5Yi0zNWQ0YjZkZWFmYTIiLCJ1c2VybmFtZSI6InRlc3RpbmdzbCIsImlhdCI6MTY4MjI3MzczOCwiZXhwIjoxNjg0ODY1NzM4fQ.RQdvB5JY-nzv3a_mxMyKvUndDx6G_zwYLQRzVG-Ev_E',
-    user: 'testingsl'
-  }
-})
+const api = (localUser?: IUser) =>
+  localUser
+    ? axios.create({
+        baseURL: import.meta.env.VITE_API_URL,
+        headers: {
+          Authorization: 'Bearer ' + localUser.token,
+          user: localUser.username
+        }
+      })
+    : axios.create({
+        baseURL: import.meta.env.VITE_API_URL
+      })
 
 export default api

@@ -1,26 +1,65 @@
 import { formatToBRL, formatToCEP } from 'brazilian-values'
 import Button from 'components/elements/Button'
 import moment from 'moment'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { MdClose, MdDone } from 'react-icons/md'
+import { useRecoilState } from 'recoil'
+import { projectsState } from 'utils/atom'
 import { IProject } from '../../interfaces/IProject'
 import { ProjectsService } from '../../services/ProjectsService'
+import { UsersService } from '../../services/UsersService'
 
 const Table = () => {
-  const [projects, setProjects] = useState<IProject[]>()
+  const [projects, setProjects] = useRecoilState<IProject[] | null>(
+    projectsState
+  )
   const projectsService = new ProjectsService()
+  const usersService = new UsersService()
+  const user = usersService.getUserLocalStorage()
 
-  const handleSetProjectAsDone = async (projectId: string) =>
-    await projectsService.setProjectAsDone(projectId)
+  const handleSetProjectAsDone = async (projectId: string) => {
+    await projectsService.setProjectAsDone(projectId, user)
+    await getProjects()
+  }
 
-  const handleDeleteProject = async (projectId: string) =>
-    await projectsService.deleteProject(projectId)
+  const handleDeleteProject = async (projectId: string) => {
+    await projectsService.deleteProject(projectId, user)
+    deleteProject(projectId)
+  }
+
+  const sortProjects = (projects: IProject[]) => {
+    return projects.sort((a, b) => {
+      if (a.done && !b.done) {
+        return 1
+      }
+      if (!a.done && b.done) {
+        return -1
+      }
+      return 0
+    })
+  }
+
+  const getProjects = async () => {
+    try {
+      const response = await projectsService.getAllProjects(user)
+      setProjects(sortProjects(response.data))
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const deleteProject = (projectId: string) => {
+    const newProjects = projects?.filter((project) => project.id !== projectId)
+    if (newProjects) {
+      setProjects(newProjects)
+    }
+  }
 
   useEffect(() => {
-    projectsService
-      .getAllProjects()
-      .then((res) => setProjects(res.data))
-      .catch((e) => console.log(e))
+    console.log(projects)
+    if (!projects) {
+      getProjects()
+    }
   })
   return (
     <div className="flex flex-col justify-center relative z-10">
